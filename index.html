@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logarithm Lab | ห้องทดลองลอการิทึม ม.4</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+:root{--ink:#39445c;--muted:#71809a;--pink:#ffd6e7;--blue:#cfe8ff;--lav:#e4dcff;--mint:#d8f5e8;--yellow:#fff0bd;--paper:#fffdfd;--line:#e8eaf3;--purple:#8876d9;--coral:#f28eaa}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:'Kanit',sans-serif;background:linear-gradient(135deg,#fff4f8,#f0f7ff 48%,#f6f1ff);min-height:100vh;overflow-x:hidden}
+.bubble{position:fixed;border-radius:50%;opacity:.45;filter:blur(1px);z-index:-1;animation:float 9s ease-in-out infinite}.b1{width:130px;height:130px;background:#ffd6e7;top:9%;left:2%}.b2{width:90px;height:90px;background:#cfe8ff;right:5%;top:25%;animation-delay:2s}.b3{width:170px;height:170px;background:#e4dcff;bottom:0;left:22%;animation-delay:4s}@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-24px) rotate(12deg)}}
+header{padding:34px 18px 22px;text-align:center}.eyebrow{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:99px;padding:5px 15px;color:var(--purple);font-size:14px;box-shadow:0 5px 20px #7782a015}
+h1{font-size:clamp(30px,5vw,48px);margin:12px 0 3px;line-height:1.2}.gradient{background:linear-gradient(90deg,#e78bad,#8b83db,#69b9c9);-webkit-background-clip:text;background-clip:text;color:transparent}.subtitle{color:var(--muted);margin:8px 0}
+.wrap{max-width:1120px;margin:auto;padding:0 18px 50px}.nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:14px 0 22px}.nav button,.btn{border:0;border-radius:14px;padding:10px 17px;font:500 15px 'Kanit';cursor:pointer;color:var(--ink);background:#fff;box-shadow:0 5px 16px #7782a018;transition:.2s}.nav button.active,.btn.primary{background:var(--purple);color:white}.nav button:hover,.btn:hover{transform:translateY(-2px)}
+.panel{display:none}.panel.active{display:block;animation:appear .35s ease}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card{background:#ffffffd9;border:1px solid #fff;border-radius:23px;padding:22px;box-shadow:0 12px 35px #6b789015;margin-bottom:18px;backdrop-filter:blur(8px)}
+h2{font-size:23px;margin:0 0 12px}h3{font-size:18px;margin:0 0 8px}.lead{color:var(--muted);line-height:1.7}.formula{font-family:'Nunito',sans-serif;font-weight:800;font-size:clamp(23px,4vw,34px);text-align:center;background:linear-gradient(120deg,#fff0f6,#f0edff);border-radius:18px;padding:20px;margin:16px 0;color:#7668c7}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.pill{display:inline-block;border-radius:12px;padding:4px 10px;font-size:13px;background:var(--mint);margin:3px}.callout{background:#fff8df;border-left:4px solid #f1cc69;padding:12px 15px;border-radius:12px;line-height:1.65}
+.control{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0}.control label{min-width:115px}.control input[type=range]{flex:1;min-width:130px;accent-color:var(--purple)}.value{font-weight:700;color:#796acb;min-width:55px}
+canvas{width:100%;height:320px;background:#fff;border:1px solid var(--line);border-radius:16px;display:block}
+.stat{background:#f7f5ff;border-radius:14px;padding:12px;text-align:center}.stat b{display:block;font:800 24px 'Nunito';color:#7869c9}.small{font-size:13px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step{padding:14px;border-radius:16px;background:#f6f8ff}.step strong{display:block;color:#796acb;margin-bottom:4px}
+.quiz-q{padding:17px;border-radius:17px;background:#faf9ff;margin:13px 0;border:1px solid #eeebfa}.quiz-q p{margin:0 0 10px;font-weight:500}.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.options label{background:white;border:1px solid var(--line);border-radius:12px;padding:9px 12px;cursor:pointer}.options input{accent-color:var(--purple);margin-right:7px}.feedback{font-size:14px;margin-top:8px;display:none}.feedback.show{display:block}.correct{color:#25865e}.wrong{color:#c65e7b}
+
+.mascot-stage{display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;margin:0 auto 22px}
+.mascot-card{position:relative;width:230px;height:220px;border-radius:25px;background:linear-gradient(145deg,#fff,#f8f1ff);border:1px solid #fff;box-shadow:0 15px 35px #8876d926;display:flex;align-items:center;justify-content:center;overflow:hidden;perspective:700px}
+.mascot-card:before,.mascot-card:after{content:"";position:absolute;border-radius:50%;background:#fbd9e9;opacity:.5;filter:blur(1px)}
+.mascot-card:before{width:90px;height:90px;top:-28px;right:-18px}.mascot-card:after{width:65px;height:65px;bottom:22px;left:-20px;background:#d9eaff}
+.math-mascot{position:relative;width:105px;height:150px;transform-style:preserve-3d;animation:mascotFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 13px 8px #7165a52c)}
+.mascot-face{position:absolute;z-index:3;top:20px;left:12px;width:82px;height:73px;border-radius:43% 43% 46% 46%;background:linear-gradient(145deg,#ffe7bb,#ffc98e);border:3px solid #f6b879;box-shadow:inset -7px -6px 0 #edaa7538, inset 5px 5px 0 #fff8d7;transform:translateZ(15px)}
+.eye{position:absolute;top:27px;width:8px;height:11px;background:#554b66;border-radius:50%;animation:blink 4s infinite}.eye.left{left:22px}.eye.right{right:22px}
+.cheek{position:absolute;top:43px;width:13px;height:7px;border-radius:50%;background:#f58fa5;opacity:.75}.cheek.left{left:9px}.cheek.right{right:9px}
+.smile{position:absolute;left:34px;top:43px;width:15px;height:9px;border-bottom:2px solid #9a5866;border-radius:0 0 50% 50%}
+.mascot-body{position:absolute;top:87px;left:20px;width:66px;height:54px;border-radius:22px 22px 17px 17px;background:linear-gradient(130deg,#b9a8ff,#8272d8);border:3px solid #7665ca;box-shadow:inset -8px -5px 0 #5945a52c, inset 5px 4px 0 #ffffff75;transform:translateZ(8px)}
+.badge-math{position:absolute;top:13px;left:12px;color:#fff;font:800 17px Nunito,sans-serif;text-shadow:0 2px 3px #51449b}
+.mascot-cap{position:absolute;z-index:4;top:2px;left:36px;width:35px;height:23px;border-radius:50% 50% 20% 20%;background:linear-gradient(135deg,#9fe2d1,#6fc8b4);color:#fff;text-align:center;font-size:17px;transform:rotate(-12deg) translateZ(20px);box-shadow:0 4px 0 #55ae9b}
+.mascot-arm{position:absolute;z-index:1;top:94px;width:18px;height:42px;border-radius:15px;background:linear-gradient(90deg,#f7bd88,#ffdda9);transform-origin:top center}.arm-left{left:8px;transform:rotate(25deg);animation:wave 1.8s ease-in-out infinite}.arm-right{right:8px;transform:rotate(-25deg)}
+.mascot-foot{position:absolute;top:132px;width:24px;height:13px;border-radius:12px;background:linear-gradient(90deg,#f7bd88,#ffdda9)}.foot-left{left:23px}.foot-right{right:23px}
+.mascot{position:absolute;z-index:5;display:grid;place-items:center;width:34px;height:34px;border-radius:12px;background:#fff;box-shadow:0 7px 15px #7768c52b;font:800 20px Nunito;color:#8876d9;animation:orbitBob 2.7s ease-in-out infinite}
+.orbit-one{left:24px;top:45px;transform:rotate(-12deg)}.orbit-two{right:22px;top:74px;background:#ffe4ee;color:#e783a4;animation-delay:.6s}.orbit-three{right:45px;top:25px;background:#e0f7ed;color:#55a992;animation-delay:1.1s}
+.mascot-caption{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#7b70b9;font-size:13px;font-weight:500}
+.mini-card{width:155px;background:linear-gradient(145deg,#fff8e9,#f2efff)}
+.cube3d{position:relative;width:70px;height:70px;transform-style:preserve-3d;transform:rotateX(-25deg) rotateY(35deg);animation:cubeSpin 7s linear infinite}
+.cube3d span{position:absolute;inset:0;display:grid;place-items:center;border:2px solid #fff;border-radius:12px;background:#c9baff;color:#fff;font:800 24px Nunito;box-shadow:inset 0 0 18px #ffffff55}
+.cube3d span:nth-child(1){transform:translateZ(35px);background:#aa9bea}.cube3d span:nth-child(2){transform:rotateY(90deg) translateZ(35px);background:#f3a9c4}.cube3d span:nth-child(3){transform:rotateX(90deg) translateZ(35px);background:#8fd4c2}
+@keyframes mascotFloat{0%,100%{transform:translateY(4px) rotateY(-8deg)}50%{transform:translateY(-10px) rotateY(9deg)}}
+@keyframes blink{0%,45%,49%,100%{transform:scaleY(1)}47%{transform:scaleY(.1)}}
+@keyframes wave{0%,100%{transform:rotate(25deg)}50%{transform:rotate(75deg)}}
+@keyframes orbitBob{0%,100%{translate:0 0;rotate:-8deg}50%{translate:0 -10px;rotate:8deg}}
+@keyframes cubeSpin{0%{transform:rotateX(-25deg) rotateY(0)}100%{transform:rotateX(335deg) rotateY(360deg)}}
+@media(prefers-reduced-motion:reduce){.math-mascot,.mascot,.cube3d,.arm-left{animation:none}}
+
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr}.card{padding:17px}canvas{height:270px}.options{grid-template-columns:1fr}}
+
+/* Enhanced depth and dimensional interface */
+body{background:radial-gradient(ellipse at 18% 12%,#fff 0,#fff4f8 28%,transparent 55%),radial-gradient(ellipse at 86% 35%,#e5f3ff 0,transparent 43%),linear-gradient(135deg,#f8f2ff,#edf8ff 55%,#fff3f7);perspective:1400px}
+.card{position:relative;transform:translateZ(0);box-shadow:0 5px 0 #e9e3f7,0 13px 22px #7782a018,0 28px 55px #8876d91a;transition:transform .28s ease,box-shadow .28s ease}
+.card:before{content:"";position:absolute;inset:0;border-radius:inherit;border-top:2px solid #ffffffd9;border-left:1px solid #ffffffb8;pointer-events:none}
+.card:hover{transform:translateY(-5px) rotateX(1.2deg);box-shadow:0 7px 0 #e6def8,0 20px 32px #7782a022,0 35px 65px #8876d926}
+.nav button{box-shadow:0 4px 0 #e8e3f4,0 8px 15px #7782a018}
+.nav button.active{box-shadow:0 4px 0 #6e5fc0,0 10px 20px #8876d94a}
+.formula{position:relative;transform:perspective(500px) rotateX(2deg);box-shadow:inset 0 2px 0 #fff,0 7px 0 #e9e2fa,0 13px 20px #8876d91a}
+.stat{box-shadow:inset 0 2px 0 #fff,0 5px 0 #e9e4fa,0 10px 18px #8876d918;transform:translateZ(12px)}
+.step{box-shadow:inset 0 2px 0 #fff,0 5px 0 #e5e9f7,0 10px 16px #7782a012;transform:translateZ(8px);transition:.25s}
+.step:hover{transform:translateY(-4px) translateZ(18px) rotateX(3deg)}
+.quiz-q{box-shadow:0 4px 0 #eeeaf8,0 10px 18px #8876d910}
+.quiz-q:focus-within{transform:translateY(-2px);box-shadow:0 5px 0 #e5def8,0 14px 22px #8876d91c}
+canvas{box-shadow:inset 0 3px 12px #e9e7f5,0 6px 0 #e8e5f3,0 13px 25px #7782a018}
+.mascot-card{transform:perspective(700px) rotateY(-5deg) rotateX(3deg);box-shadow:0 7px 0 #e6ddf7,0 18px 28px #8876d930,0 32px 50px #8876d91c}
+.mascot-card:nth-child(2){transform:perspective(700px) rotateY(7deg) rotateX(-3deg)}
+.math-mascot{filter:drop-shadow(0 18px 9px #7165a544)}
+.math-mascot:after{content:"";position:absolute;z-index:-1;left:17px;bottom:-8px;width:72px;height:15px;border-radius:50%;background:#8b79cb40;filter:blur(5px);animation:shadowPulse 3.2s ease-in-out infinite}
+.mascot-face{box-shadow:inset -9px -8px 0 #edaa7540,inset 6px 6px 0 #fff9e0,4px 7px 12px #b9785c40}
+.mascot-body{box-shadow:inset -9px -7px 0 #5945a540,inset 6px 5px 0 #ffffff88,4px 7px 12px #6655b455}
+.mascot-cap{box-shadow:0 5px 0 #55ae9b,0 9px 13px #4a9e8c55,inset 4px 3px 0 #ffffff88}
+.mascot-foot{box-shadow:inset 3px 3px 0 #fff7,0 5px 8px #b9785c38}
+.cube3d{filter:drop-shadow(12px 18px 10px #7668b944)}
+.cube3d span{backface-visibility:visible;box-shadow:inset 7px 7px 14px #ffffff55,inset -8px -8px 16px #55449a25,0 0 0 1px #ffffff88}
+@keyframes shadowPulse{0%,100%{transform:scaleX(.85);opacity:.55}50%{transform:scaleX(1.12);opacity:.9}}
+@media(hover:none){.card:hover{transform:none}}
+
+</style>
+</head>
+<body>
+<div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div>
+<header><span class="eyebrow">✦ INTERACTIVE MATHEMATICS • M.4 ✦</span><h1><span class="gradient">LOGARITHM LAB</span> 🧮</h1><p class="subtitle">ห้องทดลองลอการิทึม • ทดลอง สังเกต วิเคราะห์ ผ่านกราฟแบบเรียลไทม์</p></header>
+
+<div class="mascot-stage" aria-label="การ์ตูนคณิตศาสตร์สามมิติเคลื่อนไหว">
+  <div class="mascot-card">
+    <div class="mascot orbit-one">＋</div>
+    <div class="mascot orbit-two">×</div>
+    <div class="mascot orbit-three">π</div>
+    <div class="math-mascot">
+      <div class="mascot-cap">✦</div>
+      <div class="mascot-face"><span class="eye left"></span><span class="eye right"></span><span class="cheek left"></span><span class="cheek right"></span><span class="smile"></span></div>
+      <div class="mascot-body"><span class="badge-math">log</span></div>
+      <div class="mascot-arm arm-left"></div><div class="mascot-arm arm-right"></div>
+      <div class="mascot-foot foot-left"></div><div class="mascot-foot foot-right"></div>
+    </div>
+    <div class="mascot-caption">สวัสดีนักคณิตศาสตร์ตัวน้อย! 👋</div>
+  </div>
+  <div class="mascot-card mini-card">
+    <div class="cube3d"><span>2</span><span>3</span><span>8</span></div>
+    <div class="mascot-caption">2³ = 8 ✨</div>
+  </div>
+</div>
+
+<main class="wrap">
+<div class="nav">
+<button class="active" data-tab="learn">🌷 เรียนรู้</button><button data-tab="explore">📈 ทดลองกราฟ</button><button data-tab="practice">📝 แบบทดสอบ 10 ข้อ</button>
+</div>
+<section id="learn" class="panel active">
+<div class="card"><h2>🌟 ลอการิทึมคืออะไร?</h2><p class="lead">ลอการิทึมเป็นการดำเนินการที่ย้อนกลับของการยกกำลัง ใช้ตอบคำถามว่า “ต้องยกกำลังฐานเท่าใด จึงจะได้ผลลัพธ์ที่กำหนด”</p>
+<div class="formula">a<sup>x</sup> = N&nbsp; ⇔ &nbsp;log<sub>a</sub>N = x</div>
+<div class="callout">เงื่อนไขสำคัญ: <b>a &gt; 0, a ≠ 1 และ N &gt; 0</b><br>ตัวอย่าง: 2³ = 8 ดังนั้น log₂8 = 3</div></div>
+<div class="grid">
+<div class="card"><h3>🔎 ส่วนประกอบ</h3><div class="formula" style="font-size:27px">log<sub>a</sub>N = x</div><p> <span class="pill">a = ฐาน</span> <span class="pill">N = จำนวนจริงบวก</span> <span class="pill">x = เลขชี้กำลัง</span></p><p class="lead">ค่าลอการิทึมคือเลขชี้กำลังที่ทำให้ฐานยกกำลังแล้วได้ N</p></div>
+<div class="card"><h3>🪄 ตัวอย่างชวนคิด</h3><p>log₃81 = ?</p><p>เพราะ 3<sup>4</sup> = 81</p><div class="formula">log₃81 = 4</div><p class="small">ลองตรวจสอบด้วยการเขียนกลับเป็นรูปเลขยกกำลัง</p></div>
+</div>
+<div class="card"><h2>🧁 สมบัติพื้นฐานของลอการิทึม</h2><div class="steps">
+<div class="step"><strong>ผลคูณ</strong>logₐ(MN) = logₐM + logₐN</div>
+<div class="step"><strong>ผลหาร</strong>logₐ(M/N) = logₐM − logₐN</div>
+<div class="step"><strong>เลขยกกำลัง</strong>logₐ(Mᵏ) = k logₐM</div>
+</div><p class="small">เมื่อ M,N &gt; 0, a &gt; 0 และ a ≠ 1</p></div>
+</section>
+<section id="explore" class="panel">
+<div class="card"><h2>📈 ทดลองปรับฐานและเลขชี้กำลัง</h2><p class="lead">เลื่อนตัวควบคุมเพื่อสังเกตความสัมพันธ์ระหว่างฟังก์ชันเลขยกกำลัง y = aˣ และลอการิทึม y = logₐx กราฟจะเปลี่ยนทันที</p>
+<div class="control"><label for="base">ฐาน a</label><input id="base" type="range" min="1.2" max="4" step=".1" value="2"><span class="value" id="baseVal">2.0</span></div>
+<div class="control"><label for="expo">เลขชี้กำลัง x</label><input id="expo" type="range" min="-2" max="3" step=".1" value="2"><span class="value" id="expoVal">2.0</span></div>
+<div class="grid"><div class="stat"><span class="small">ค่าจากการยกกำลัง</span><b id="powerVal">4.00</b><span class="small">aˣ</span></div><div class="stat"><span class="small">ค่าลอการิทึมย้อนกลับ</span><b id="logVal">2.00</b><span class="small">logₐ(aˣ)</span></div></div>
+<canvas id="graph" width="900" height="380" aria-label="กราฟฟังก์ชันเลขยกกำลังและลอการิทึม"></canvas>
+<p class="small">เส้นสีชมพู: y = aˣ • เส้นสีม่วง: y = logₐx • เส้นประ: y = x (เส้นสะท้อนสมมาตร)</p>
+<div class="callout">สังเกต: กราฟ y = aˣ และ y = logₐx เป็นภาพสะท้อนกันเมื่อเทียบกับเส้น y = x เพราะทั้งสองฟังก์ชันเป็นฟังก์ชันผกผันกัน</div>
+</div>
+<div class="card"><h2>🧠 ภารกิจนักสำรวจ</h2><ol><li>ปรับฐาน a จาก 1.2 ไปถึง 4 แล้วสังเกตความชันของกราฟ</li><li>ปรับเลขชี้กำลัง x เป็นค่าติดลบ แล้วสังเกตค่า aˣ</li><li>อธิบายว่าเหตุใด logₐ(aˣ) จึงได้ค่าเท่ากับ x</li></ol></div>
+</section>
+<section id="practice" class="panel">
+<div class="card"><h2>📝 แบบทดสอบท้ายกิจกรรม 10 ข้อ</h2><p class="lead">เลือกคำตอบที่ถูกต้องให้ครบทุกข้อ แล้วกด “ตรวจคำตอบ” เพื่อดูคะแนนและเฉลย</p><div id="quiz"></div><button class="btn primary" id="check">ตรวจคำตอบ ✨</button> <button class="btn" id="reset">เริ่มใหม่</button><div id="result" class="callout" style="display:none;margin-top:16px"></div></div>
+</section>
+<footer>✿ LOGARITHM LAB • สื่อการเรียนรู้คณิตศาสตร์ระดับชั้นมัธยมศึกษาปีที่ 4 ✿</footer>
+</main>
+<script>
+const tabs=document.querySelectorAll('.nav button');tabs.forEach(b=>b.addEventListener('click',()=>{tabs.forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');if(b.dataset.tab==='explore')draw()}));
+const base=document.getElementById('base'),expo=document.getElementById('expo');
+function update(){let a=+base.value,x=+expo.value,p=Math.pow(a,x);document.getElementById('baseVal').textContent=a.toFixed(1);document.getElementById('expoVal').textContent=x.toFixed(1);document.getElementById('powerVal').textContent=p.toFixed(3);document.getElementById('logVal').textContent=(Math.log(p)/Math.log(a)).toFixed(3);draw()}
+base.addEventListener('input',update);expo.addEventListener('input',update);
+let animationPhase = 0;
+function draw(){
+ const c=document.getElementById('graph'); if(!c)return;
+ const ctx=c.getContext('2d'),w=c.width,h=c.height;
+ ctx.clearRect(0,0,w,h);
+ const xmin=-3,xmax=5,ymin=-3,ymax=8;
+ const X=x=>((x-xmin)/(xmax-xmin))*w, Y=y=>h-((y-ymin)/(ymax-ymin))*h;
+ ctx.strokeStyle='#edf0f7';ctx.lineWidth=1;
+ for(let x=-3;x<=5;x++){ctx.beginPath();ctx.moveTo(X(x),0);ctx.lineTo(X(x),h);ctx.stroke()}
+ for(let y=-3;y<=8;y++){ctx.beginPath();ctx.moveTo(0,Y(y));ctx.lineTo(w,Y(y));ctx.stroke()}
+ ctx.strokeStyle='#9aa4b8';ctx.lineWidth=1.5;ctx.beginPath();
+ ctx.moveTo(0,Y(0));ctx.lineTo(w,Y(0));ctx.moveTo(X(0),0);ctx.lineTo(X(0),h);ctx.stroke();
+ function curve(fn,color){
+   ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=3;let started=false;
+   for(let px=0;px<=w;px++){
+     let xx=xmin+px/w*(xmax-xmin),yy=fn(xx);
+     if(!Number.isFinite(yy)||yy<ymin-1||yy>ymax+1){started=false;continue}
+     if(!started){ctx.moveTo(px,Y(yy));started=true}else ctx.lineTo(px,Y(yy))
+   }ctx.stroke()
+ }
+ const a=+base.value;
+ curve(x=>Math.pow(a,x),'#f08eae');
+ curve(x=>x>0?Math.log(x)/Math.log(a):NaN,'#8876d9');
+ ctx.save();ctx.setLineDash([8,7]);ctx.strokeStyle='#78bdb0';ctx.lineWidth=2;
+ ctx.beginPath();ctx.moveTo(X(xmin),Y(xmin));ctx.lineTo(X(xmax),Y(xmax));ctx.stroke();ctx.restore();
+
+ // Animated inverse-function point pair: (t, a^t) and (a^t, t)
+ const t=-1.8+((animationPhase%1)*4.1);
+ const p=Math.pow(a,t);
+ if(p>xmin&&p<xmax&&t>ymin&&t<ymax){
+   ctx.save();ctx.setLineDash([5,5]);ctx.strokeStyle='#b6a9ed';ctx.lineWidth=2;
+   ctx.beginPath();ctx.moveTo(X(t),Y(p));ctx.lineTo(X(p),Y(t));ctx.stroke();ctx.restore();
+   function glowDot(x,y,color){
+     const px=X(x),py=Y(y);
+     ctx.save();ctx.shadowColor=color;ctx.shadowBlur=18;
+     ctx.fillStyle=color;ctx.beginPath();ctx.arc(px,py,8,0,Math.PI*2);ctx.fill();
+     ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();ctx.restore();
+   }
+   glowDot(t,p,'#f08eae');glowDot(p,t,'#8876d9');
+   ctx.font='bold 15px Kanit';ctx.fillStyle='#d96f96';ctx.fillText('(x, aˣ)',Math.min(w-80,X(t)+12),Math.max(18,Y(p)-12));
+   ctx.fillStyle='#7868c8';ctx.fillText('(aˣ, x)',Math.min(w-80,X(p)+12),Math.max(18,Y(t)-12));
+ }
+ ctx.fillStyle='#67738a';ctx.font='15px Kanit';ctx.fillText('x',w-18,Y(0)-8);ctx.fillText('y',X(0)+8,17);
+}
+function animateGraph(){
+ animationPhase += 0.0025;
+ draw();
+ requestAnimationFrame(animateGraph);
+}
+
+const questions=[
+['log₂8 มีค่าเท่าใด?',['2','3','4','8'],1,'เพราะ 2³ = 8 ดังนั้น log₂8 = 3'],
+['log₃9 มีค่าเท่าใด?',['1','2','3','9'],1,'เพราะ 3² = 9'],
+['เขียน 5² = 25 ในรูปลอการิทึมได้อย่างไร?',['log₅2 = 25','log₂5 = 25','log₅25 = 2','log₂25 = 5'],2,'ฐานและผลลัพธ์คงเดิม ส่วนเลขชี้กำลังเป็นค่าลอการิทึม'],
+['log₁₀100 มีค่าเท่าใด?',['1','2','10','100'],1,'เพราะ 10² = 100'],
+['ข้อใดเป็นเงื่อนไขของฐาน a?',['a < 0','a = 1','a > 0 และ a ≠ 1','a ต้องเป็นจำนวนเต็ม'],2,'ฐานต้องเป็นจำนวนจริงบวกและห้ามเท่ากับ 1'],
+['log₄1 มีค่าเท่าใด?',['0','1','4','ไม่มีค่า'],0,'เพราะ 4⁰ = 1'],
+['log₂(1/8) มีค่าเท่าใด?',['−2','−3','3','8'],1,'เพราะ 2⁻³ = 1/8'],
+['log₅5 มีค่าเท่าใด?',['0','1','5','−1'],1,'เพราะ 5¹ = 5'],
+['log₂4 + log₂8 มีค่าเท่าใด?',['3','4','5','6'],2,'log₂4 = 2 และ log₂8 = 3 รวมเป็น 5'],
+['ถ้า log₃x = 4 แล้ว x เท่ากับเท่าใด?',['12','27','64','81'],3,'แปลงเป็นรูปเลขยกกำลังได้ x = 3⁴ = 81']
+];
+function buildQuiz(){const root=document.getElementById('quiz');root.innerHTML='';questions.forEach((q,i)=>{let d=document.createElement('div');d.className='quiz-q';d.innerHTML=`<p>${i+1}. ${q[0]}</p><div class="options">${q[1].map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}">${String.fromCharCode(65+j)}. ${o}</label>`).join('')}</div><div class="feedback" id="f${i}"></div>`;root.appendChild(d)})}
+document.getElementById('check').addEventListener('click',()=>{let score=0,answered=0;questions.forEach((q,i)=>{let chosen=document.querySelector(`input[name="q${i}"]:checked`),f=document.getElementById('f'+i);f.className='feedback show';if(chosen){answered++;if(+chosen.value===q[2]){score++;f.innerHTML='✓ ถูกต้อง! '+q[3];f.classList.add('correct')}else{f.innerHTML='✗ ยังไม่ถูกต้อง เฉลย: '+String.fromCharCode(65+q[2])+'. '+q[1][q[2]]+' — '+q[3];f.classList.add('wrong')}}else{f.innerHTML='ยังไม่ได้ตอบ • เฉลย: '+String.fromCharCode(65+q[2])+'. '+q[1][q[2]]+' — '+q[3];f.classList.add('wrong')}});let r=document.getElementById('result');r.style.display='block';r.innerHTML=`🎉 คะแนนของคุณ <b>${score} / 10</b> ข้อ (ตอบแล้ว ${answered} ข้อ) ${score>=8?'ยอดเยี่ยมมาก! 🌟':score>=5?'ทำได้ดี ลองทบทวนอีกนิดนะ 💗':'กลับไปทบทวนบทเรียน แล้วลองใหม่อีกครั้งนะ 🌱'}`;r.scrollIntoView({behavior:'smooth',block:'nearest'})});
+document.getElementById('reset').addEventListener('click',()=>{buildQuiz();document.getElementById('result').style.display='none'});buildQuiz();update();animateGraph();
+</script>
+</body></html>
